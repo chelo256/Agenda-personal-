@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 import sqlite3, os
 from datetime import datetime
 
-app = Flask(__name__, template_folder='plantillas')
+app = Flask(__name__, template_folder='templates')
 DB = 'agenda.db'
 
 def init_db():
