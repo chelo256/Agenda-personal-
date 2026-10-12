@@ -1,0 +1,50 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agenda Personal - chelo256</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="max-w-4xl mx-auto p-4">
+<h1 class="text-3xl font-bold mb-2">📒 Agenda Personal</h1>
+<p class="text-gray-600 mb-6">Guarda cosas y consúltalas rápido - chelo256</p>
+
+<form action="/agregar" method="post" class="bg-white p-4 rounded shadow mb-6 grid gap-3">
+<input name="titulo" required placeholder="Título: ej. Pagar internet" class="border p-2 rounded">
+<textarea name="descripcion" placeholder="Descripción..." class="border p-2 rounded"></textarea>
+<div class="grid grid-cols-3 gap-2">
+<select name="categoria" class="border p-2 rounded"><option value="personal">Personal</option><option value="trabajo">Trabajo</option><option value="ideas">Ideas</option><option value="recordatorio">Recordatorio</option></select>
+<input type="date" name="fecha" class="border p-2 rounded">
+<select name="prioridad" class="border p-2 rounded"><option>Normal</option><option>Alta</option><option>Baja</option></select>
+</div>
+<button class="bg-black text-white py-2 rounded font-semibold">Guardar</button>
+</form>
+
+<form class="flex gap-2 mb-4">
+<input name="q" value="{{q}}" placeholder="Buscar..." class="border p-2 rounded flex-1">
+<select name="cat" class="border p-2 rounded"><option value="">Todas</option><option value="personal" {% if cat=='personal'%}selected{%endif%}>Personal</option><option value="trabajo" {% if cat=='trabajo'%}selected{%endif%}>Trabajo</option><option value="ideas" {% if cat=='ideas'%}selected{%endif%}>Ideas</option></select>
+<button class="bg-gray-200 px-4 rounded">Filtrar</button>
+</form>
+
+<div class="space-y-3">
+{% for e in entradas %}
+<div class="bg-white p-3 rounded shadow flex justify-between items-start {% if e['hecho'] %}opacity-60{% endif %}">
+<div>
+<div class="font-bold {% if e['hecho'] %}line-through{% endif %}">{{ e['titulo'] }} <span class="text-xs bg-gray-100 px-2 py-1 rounded ml-2">{{ e['categoria'] }} - {{ e['prioridad'] }}</span></div>
+<div class="text-sm text-gray-600">{{ e['descripcion'] }}</div>
+<div class="text-xs text-gray-400">{{ e['fecha'] }}</div>
+</div>
+<div class="flex gap-2">
+<a href="/toggle/{{ e['id'] }}" class="text-sm px-3 py-1 bg-green-100 rounded">{% if e['hecho'] %}Deshacer{% else %}Hecho{% endif %}</a>
+<a href="/borrar/{{ e['id'] }}" class="text-sm px-3 py-1 bg-red-100 rounded">Borrar</a>
+</div>
+</div>
+{% else %}
+<p class="text-center text-gray-400 py-10">Aún no hay datos. ¡Agrega tu primera nota arriba!</p>
+{% endfor %}
+</div>
+</div>
+</body>
+</html>
